@@ -1,4 +1,4 @@
-import kagglehub, os, random, pandas as pd, time
+import kagglehub, os, random, pandas as pd, time, json as js
 
 def cronometro(func):
     def envoltura(*args, **kwargs):
@@ -71,22 +71,26 @@ def analisis_financiero(fp: int, fn: int):
     print(f"📞 Costo de atención por bloqueos erróneos (FP): ${costo_operativo_soporte:,} MXN")
     print(f"⚠️  IMPACTO TOTAL AL NEGOCIO: ${impacto_total:,} MXN")
 
+@cronometro
+def new_data(data:object):
+    y_pred = []
+    for valor in data:
+        if random.random() < .96:
+            y_pred.append(valor)
+        else:
+            y_pred.append(1 - valor)
+    return y_pred
 
+    
 data = pd.read_csv(descarga_datos("isaikumar/creditcardfraud")) # init pd read
 
 y_real = data['Class'].tolist() # separe Class colum
 # Output the number of items in y_real
 print(f"Total de registros : {len(y_real)} registros")
 
-y_pred = [] # Create a group module
-for valor in y_real:
-    if random.random() < 0.95:
-        y_pred.append(valor)
-    else:
-        y_pred.append(1 - valor)
-        
-# Obtenemos los conteos
+y_pred = new_data(y_real) # Create a group module
 
+# Matriz de confusion        
 tp, fp, tn, fn = evaluador_analitico(y_real, y_pred)
 
 print("--- RESULTADOS DEL EVALUADOR ---")
@@ -94,9 +98,10 @@ print(f"Verdaderos Positivos (Fraudes detectados): {tp}")
 print(f"Falsos Positivos (Clientes bloqueados): {fp}")
 print(f"Verdaderos Negativos (Normales correctos): {tn}")
 print(f"Falsos Negativos (Fraudes escapados): {fn}")
-
+print("___________________________\n")
 metricas = calcular_metricas(tp,fp,tn,fn)
+
 analisis_financiero(fp,fn)
 for k,v in metricas.items():
   por = v * 100;
-  print(f"__________\n{k} : {por:.2f}% \n")
+  print(f"{k} : {por:.2f}% \n")

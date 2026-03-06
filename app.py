@@ -8,7 +8,7 @@ def cronometro(func):
         print(f"\n⏱️  La función '{func.__name__}' tardó {fin - inicio:.4f} segundos.")
         return resultado
     return envoltura
-
+  
 @cronometro
 def evaluador_analitico(y_real, y_pred):
     # Inicializamos los contadores de los conjuntos
@@ -81,9 +81,23 @@ def new_data(data:object):
             y_pred.append(1 - valor)
     return y_pred
 
-    
-data = pd.read_csv(descarga_datos("isaikumar/creditcardfraud")) # init pd read
+@cronometro
+def crear_subconjunto(data: pd.DataFrame, columnas_a_analizar: list) -> pd.DataFrame:
+    """
+    Crea un subconjunto del DataFrame original.
+    @params data :: Es el data frame original
+    @params columnas_a_analizar :: Son las columnas que se quieren para el subconjunto, deben pasarse en formato de lista.
+    @return subdata :: Devuelve un subconjunto
+    """
+    subdata = data[columnas_a_analizar].copy()
+    return subdata
+      
+@cronometro
+def tendencia_central(data):
+  return
 
+data = pd.read_csv(descarga_datos("isaikumar/creditcardfraud")) # init pd read
+crear_subconjunto(data,['Time','Amount','Class'])
 y_real = data['Class'].tolist() # separe Class colum
 # Output the number of items in y_real
 print(f"Total de registros : {len(y_real)} registros")

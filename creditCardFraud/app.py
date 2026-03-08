@@ -1,14 +1,6 @@
-import kagglehub, os, random, pandas as pd, time, json as js
+import manager,os,sys, kagglehub, random, pandas as pd, time, json
+from utils import cronometro
 
-def cronometro(func):
-    def envoltura(*args, **kwargs):
-        inicio = time.time()
-        resultado = func(*args, **kwargs) # Aquí se ejecuta tu evaluador
-        fin = time.time()
-        print(f"\n⏱️  La función '{func.__name__}' tardó {fin - inicio:.4f} segundos.")
-        return resultado
-    return envoltura
-  
 @cronometro
 def evaluador_analitico(y_real, y_pred):
     # Inicializamos los contadores de los conjuntos

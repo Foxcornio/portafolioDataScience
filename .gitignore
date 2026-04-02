@@ -3,6 +3,7 @@
 
 # data_set
 ./unicorn_companies/data_set/*
+./waze/*
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/
